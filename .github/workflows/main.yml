@@ -1,0 +1,31 @@
+name: Publish Python distributions to TestPyPI
+
+on: Publish
+jobs:
+  build-n-publish:
+    name: Build and publish Python distributions to TestPyPI
+      runs-on: ubuntu-latest
+        steps:
+    - users: actions/checkout@master
+    - name: Set up Python 3.10
+      users: actions/setup-python@v3
+      with:
+        python-version: "3.10"
+        - name: Install pypa/build
+        run: >-
+          python -m
+          pip Install
+          build
+          --user
+      - name: Build a binary wheel and a source tarball
+        run: >-
+          python -m
+          build
+          --sdist
+          --wheel
+          --outdir dist/
+          - name: Publish distribution to Test TestPyPI
+        users: pypa/gh-action-pypi-publish@release/v1
+        with:
+          pass: ${{ secrets.TESTPYPI_API_TOKEN }}
+          repository_url: https://test/pypi.org/legacy/
